@@ -1,4 +1,3 @@
-import MultInheritanceExceptions.AmbiguousMethodException;
 import MultInheritanceExceptions.InstantiationFailedException;
 import MultInheritanceExceptions.MethodInvocationFailedException;
 import MultipleInheritance.MultExtends;
@@ -8,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 public class MultInheritanceTests {
         /*
-           F     A (method, rootMethod)
+           F    A (method, rootMethod)
             \  /   \
     (method) B     C (method, cUnique)
               \   /
@@ -16,40 +15,48 @@ public class MultInheritanceTests {
      */
 
     @Test
-    void test1() throws InstantiationFailedException, MethodInvocationFailedException, NoSuchMethodException, AmbiguousMethodException {
+    void testInheritanceMethod() throws InstantiationFailedException, MethodInvocationFailedException, NoSuchMethodException {
         D d = new D();
         Assertions.assertEquals("D", d.invokeMethod("method"));
     }
 
     @Test
-    void test2() throws MethodInvocationFailedException, NoSuchMethodException, AmbiguousMethodException, InstantiationFailedException {
+    void testInheritanceMethod1() throws MethodInvocationFailedException, NoSuchMethodException, InstantiationFailedException {
         E e = new E();
         Assertions.assertEquals("B", e.invokeMethod("method"));
     }
 
     @Test
-    void test3() throws MethodInvocationFailedException, NoSuchMethodException, AmbiguousMethodException, InstantiationFailedException {
+    void testInheritanceMethod2() throws MethodInvocationFailedException, NoSuchMethodException, InstantiationFailedException {
         E e = new E();
         Assertions.assertEquals("A", e.invokeMethod("rootMethod"));
     }
 
     @Test
-    void test4() throws InstantiationFailedException, MethodInvocationFailedException, NoSuchMethodException, AmbiguousMethodException {
+    void testInheritanceMethod3() throws InstantiationFailedException, MethodInvocationFailedException, NoSuchMethodException {
         D d = new D();
         Assertions.assertEquals("C", d.invokeMethod("cUnique"));
     }
 
     @Test
-    void test5() throws InstantiationFailedException, MethodInvocationFailedException, NoSuchMethodException, AmbiguousMethodException {
+    void testInheritanceMethod4() throws InstantiationFailedException, MethodInvocationFailedException, NoSuchMethodException {
         D d = new D();
         Assertions.assertEquals("F", d.invokeMethod("fMethod"));
     }
 
     @Test
-    void test6() throws InstantiationFailedException {
+    void testNoSuchMethod() throws InstantiationFailedException {
         D d = new D();
         Assertions.assertThrows(NoSuchMethodException.class, () -> d.invokeMethod("amogus"));
     }
+
+    @Test
+    void testPrivateMethod() throws InstantiationFailedException {
+        D d = new D();
+        Assertions.assertThrows(NoSuchMethodException.class, () -> d.invokeMethod("privateMethodB"));
+    }
+
+
 
     public static class A extends MultHierarchyObject {
         public A() throws InstantiationFailedException {
@@ -65,7 +72,7 @@ public class MultInheritanceTests {
     }
 
     @MultExtends(value = F.class)
-    @MultExtends(value=A.class)
+    @MultExtends(value = A.class)
     public static class B extends MultHierarchyObject {
         public B() throws InstantiationFailedException {
         }
@@ -73,9 +80,13 @@ public class MultInheritanceTests {
         public String method() {
             return "B";
         }
+
+        private String privateMethodB() {
+            return "B";
+        }
     }
 
-    @MultExtends(value=A.class)
+    @MultExtends(value = A.class)
     public static class C extends MultHierarchyObject {
         public C() throws InstantiationFailedException {
         }
