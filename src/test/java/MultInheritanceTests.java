@@ -6,13 +6,13 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class MultInheritanceTests {
-        /*
-           F    A (method, rootMethod)
-            \  /   \
-    (method) B     C (method, cUnique)
-              \   /
-               D (method), E (no method)
-     */
+                        /*
+                           F    A (method, rootMethod)
+                            \ /   \
+    (method, nextTestMethod) B     C (method, nextTestMethod, cUnique)
+                              \   /
+                                D (method), E (no method)
+                     */
 
     @Test
     void testInheritanceMethod() throws InstantiationFailedException, MethodInvocationFailedException, NoSuchMethodException {
@@ -56,7 +56,12 @@ public class MultInheritanceTests {
         Assertions.assertThrows(NoSuchMethodException.class, () -> d.invokeMethod("privateMethodB"));
     }
 
-
+    @Test
+    void testNextMethod() throws InstantiationFailedException, MethodInvocationFailedException, NoSuchMethodException {
+        D d = new D();
+        Assertions.assertEquals("B", d.callNextMethod("method"));
+        Assertions.assertEquals("C", d.callNextMethod("nextTestMethod"));
+    }
 
     public static class A extends MultHierarchyObject {
         public A() throws InstantiationFailedException {
@@ -81,6 +86,8 @@ public class MultInheritanceTests {
             return "B";
         }
 
+        public String nextTestMethod() { return "B"; }
+
         private String privateMethodB() {
             return "B";
         }
@@ -94,6 +101,8 @@ public class MultInheritanceTests {
         public String method() {
             return "C";
         }
+
+        public String nextTestMethod() { return "C"; }
 
         public String cUnique() {
             return "C";

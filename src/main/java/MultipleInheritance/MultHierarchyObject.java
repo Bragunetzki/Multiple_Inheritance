@@ -64,7 +64,7 @@ public class MultHierarchyObject {
             argTypes[i] = callArgs[i].getClass();
         }
 
-        Object o = findDefiningClass(name, argTypes);
+        Object o = findNextDefiningClass(name, argTypes);
 
         try {
             Method m = o.getClass().getMethod(name, argTypes);
