@@ -1,8 +1,5 @@
 package MultipleInheritance;
 
-import MultInheritanceExceptions.InstantiationFailedException;
-import MultInheritanceExceptions.MethodInvocationFailedException;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -24,7 +21,6 @@ public class MultHierarchyObject {
                     if (Modifier.isPrivate(parentConstructor.getModifiers())) {
                         throw new InstantiationFailedException();
                     }
-                    parentConstructor.setAccessible(true);
                     parents.add(parentConstructor.newInstance());
                 }
             } catch (Exception e) {
@@ -75,9 +71,10 @@ public class MultHierarchyObject {
     }
 
     public Object findDefiningClass(String name, Class<?>... argTypes) throws NoSuchMethodException {
+        if (isMethodDefinedInClass(this.getClass(), name, argTypes)) return this;
+
         List<Object> nextLayer = new ArrayList<>();
         List<Object> currentLayer = new ArrayList<>(parents);
-        if (isMethodDefinedInClass(this.getClass(), name, argTypes)) return this;
 
         while (!currentLayer.isEmpty()) {
             for (Object p : currentLayer) {
@@ -118,15 +115,5 @@ public class MultHierarchyObject {
             nextLayer.clear();
         }
         throw new NoSuchMethodException();
-    }
-
-    public boolean multExtends(Class<?> c) {
-        for (Object o : parents) {
-            if (o.getClass() == c ||
-                    (o instanceof MultHierarchyObject && ((MultHierarchyObject) o).multExtends(c)) ||
-                    (!(o instanceof MultHierarchyObject) && c.isAssignableFrom(o.getClass())))
-                return true;
-        }
-        return false;
     }
 }

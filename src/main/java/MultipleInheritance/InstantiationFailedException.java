@@ -1,4 +1,4 @@
-package MultInheritanceExceptions;
+package MultipleInheritance;
 
 public class InstantiationFailedException extends Exception {
 }

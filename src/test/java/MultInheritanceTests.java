@@ -1,5 +1,5 @@
-import MultInheritanceExceptions.InstantiationFailedException;
-import MultInheritanceExceptions.MethodInvocationFailedException;
+import MultipleInheritance.InstantiationFailedException;
+import MultipleInheritance.MethodInvocationFailedException;
 import MultipleInheritance.MultExtends;
 import MultipleInheritance.MultHierarchyObject;
 import org.junit.jupiter.api.Assertions;
